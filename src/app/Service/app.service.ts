@@ -29,8 +29,20 @@ export class AppService {
   getUrlLessons(){
     return this.url + '/lessons';
   }
+  getUrlWishlist(){
+  return this.url + '/wishlist/';
+  }
   getUrlGoals(){
     return this.url + '/objectives/course/';
+  }
+  getUrlCart(){
+    return this.url + '/cart/'
+  }
+  getUrlCartMine(){
+    return this.url + '/cart/mine'
+  }
+  getUrlEnroll(){
+    return this.url + '/enrollments/'
   }
   notiSuccess(title: string, message: string){
     this.toast.success({
@@ -59,5 +71,18 @@ export class AppService {
   logOut(){
     localStorage.clear();
   }
+  formatCurrency(input: number): string {
+    let million = Math.floor(input / 1000); 
+    let output = '';
+    if (million >= 1) {
+      output = million + ' triệu';
+    }
+    let thousand = input % 1000; 
+    if (thousand >= 1) {
+      output += ' ' + thousand + ' nghìn'; 
+    }
+    return output;
+  }
+  
 
 }

@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { AppService } from './app.service';
 import { Observable } from 'rxjs';
 import { User } from '../Model/user';
@@ -14,13 +14,14 @@ export class AuthService {
   }
   url = '';
   private baseUrl = 'http://localhost:9000/api/profile/me';
-  constructor(private http: HttpClient, 
+  constructor(
+    @Inject(HttpClient)private http: HttpClient, 
     private appService: AppService) {
     
   }
   //chức năng của hàm là để gọi api đăng nhập
-  login(email: any, password: any): Observable<any> { 
-    this.url = this.appService.geturlLogin();  //trả về url để login
+  login(email: any, password: any) { 
+    this.url = this.appService.geturlLogin();  
     let obj = {email, password}; 
     return this.http.post(`${this.url}`, obj, { withCredentials: true }).pipe();
   }

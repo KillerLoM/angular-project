@@ -18,7 +18,12 @@ import { Lessons } from 'src/app/Model/lessons';
 import { AppService } from 'src/app/Service/app.service';
 import { CourseService } from 'src/app/Service/course.service';
 import { LessonsService } from 'src/app/Service/lessons.service';
+import { ShareService } from '../../../app/Service/shared/share.service';
+import { Injectable } from '@angular/core';
 
+@Injectable({
+  providedIn: 'root',
+})
 @Component({
   selector: 'app-lessons',
   templateUrl: './lessons.component.html',
@@ -42,23 +47,28 @@ export class LessonsComponent implements OnInit, AfterViewChecked {
   isRating : boolean = false;
   start: number | null = 0;
   isChecked: boolean = false;
+  checkValid = false;
   videoUrl = '';
   @ViewChild('myVideo') myVideo: ElementRef | undefined;
   @ViewChild('progressBar') progressBar: ElementRef | undefined;
   progress: number = 0;
 width: any;
   constructor(
-    private lessonService: LessonsService,
-    private route: ActivatedRoute,
+     private lessonService: LessonsService,
+      private route: ActivatedRoute,
     private courseService: CourseService,
     private appService: AppService,
+    private shareService: ShareService
 
   ) {
     this.idn = 1;
     this.indexActive = 0;
     this.maxProgress = 0;
+  
   }
   ngOnInit() {
+    this.CheckValid();
+    if(this.checkValid) {
     this.route.paramMap.subscribe((params) => {
       const idParam = params.get('id') ?? null;
       if (idParam !== null) {
@@ -70,9 +80,11 @@ width: any;
     this.getAllLessons();
     this.getGoalsCourse();
     this.init();
+
     this.myVideo?.nativeElement.addEventListener('timeupdate', () =>
       this.updateProgress()
     );
+  }
   }
 
   updateProgress() {
@@ -253,5 +265,7 @@ width: any;
     }
     
   }
-
+  CheckValid(){
+    this.checkValid = this.shareService.getCheckValid();
+  }
 }

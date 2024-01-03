@@ -10,6 +10,12 @@
     <title>HỌC</title>
   </head>
   <body>
+    <div>
+      <app-exception></app-exception>
+    </div>
+    <div *ngIf="checkValid">
+
+
     <nav class="navbar bg-body-tertiary fixed-top" style="height: 50px">
       <div class="container-fluid">
         <a class="navbar-brand" href="http://localhost:4200"
@@ -158,11 +164,11 @@
                     style="margin-top: 15px"
                     type="checkbox"
                     value="true"
-                    id="{{ element.id*100 }}"
+                    id="{{ element.id}}"
                   />
                   <div type="button" (click)="handleClick(element.id*100, i)">
                     <div class="conten-lessons">
-                     Bài {{ element.lessonName }}
+                     Bài {{ element.position }}. {{ element.lessonName }}
                       <span class="conten-lessons" style="font-style: italic">
                         Đánh dấu để hoàn thành
                       </span>
@@ -299,5 +305,6 @@
         </div>
       </div>
     </section>
+  </div>
   </body>
 </html>

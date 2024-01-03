@@ -20,8 +20,6 @@ export class LoginComponent {
   isLogIn = true;
   isSignUp = false;
   margin: any;
-
-  // Form controls for email and password
   emailFormControl = new FormControl('', [
     Validators.required,
     Validators.email,
@@ -47,13 +45,9 @@ export class LoginComponent {
     this.isLogIn = false;
     this.isSignUp = true;
   }
-
-  // New method for handling login
   handleLogin(email: any, password: any, loginForm: NgForm) {
     email = email.value;
     password = password.value;
-
-    // Check if email and password are valid
     if (loginForm.valid) {
 
       console.log(email);

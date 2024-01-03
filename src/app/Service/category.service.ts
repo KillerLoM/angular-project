@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { AppService } from './app.service';
 import { HttpClient } from '@angular/common/http';
 
@@ -8,7 +8,7 @@ import { HttpClient } from '@angular/common/http';
 export class CategoryService {
   url = '';
   constructor(private appService: AppService,
-    private http: HttpClient) {
+    @Inject(HttpClient) private http: HttpClient) {
    }
    getAllCategories(){
     this.url = this.appService.getUrlCourses()+'/categories';

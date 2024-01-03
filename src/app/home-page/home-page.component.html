@@ -49,38 +49,58 @@
                   srcset=""
                   style="width: 150px; height: auto; margin-right: 20px"
               /></a>
-              <form
-                class="d-flex border border-primary-subtle search rounded-pill"
-                role="search"
-              >
+              <form class="example-form rounded-pill d-flex flex-row mb-3" [formGroup]="inputForm">
+
                 <button
-                  type="submit"
                   style="
-                    border: none;
-                    background-color: transparent;
-                    margin-left: 2%;
-                    margin-top: 2%;
+                    margin-left: -45px;
+                    margin-top: -5%;
+                    height: 0px;
+                    width: 63px;
                   "
+                  class="btn p-2"
                 >
-                  <span class="material-symbols-outlined" role="img">
-                    search
-                  </span>
+                  <mat-icon class="material-iconn">search</mat-icon>
                 </button>
                 <input
-                  class="form-control"
                   type="text"
-                  placeholder="Search"
-                  aria-label="Search"
-                  style="
-                    border: none;
-                    background-color: transparent;
-                    margin-right: 2%;
-                  "
+                  id="search"
+                  placeholder="Nhập vào tên khóa học bạn đang cần kiếm"
+                  [formControl]="control"
+                  formControlName="inputControl"
+                  [matAutocomplete]="auto"
+                  class="example-input p-2"
+                  #title
                 />
+                <div style="margin-top: 20%; height: 400px">
+                <mat-autocomplete #auto="matAutocomplete">
+                  <div style="margin-top: 30px">
+                    <mat-option (click)="handleClick(item.id)"
+                      *ngFor="let item of filteredItems | async"
+                      [value]="item.title"
+                    >
+                    <div class="card mb-3" >
+                      <div class="row g-0">
+                        <div class="col-md-4" style="margin-top: 43px;">
+                          <img src="{{item.thumbUrl}}" class="img-fluid rounded-start" alt="...">
+                        </div>
+                        <div class="col-md-8">
+                          <div class="card-body">
+                            <h5 class="card-title">{{item.title}}</h5>
+                            <p class="card-text">{{item.subtitle}}</p>
+                            <p class="card-text"><small class="text-body-secondary">Gía: {{appService.formatCurrency(item.price)}} đồng</small></p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    </mat-option>
+                  </div>
+                </mat-autocomplete>
+              </div>
               </form>
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                  <a class="nav-link" aria-current="page" href="#"
+                  <a class="nav-link" aria-current="page" href="http://localhost:4201/" target="_blank" 
                     >FEDUCATION dành cho giảng viên</a
                   >
                 </li>
@@ -98,9 +118,13 @@
                         class="dropdown-menu box-list"
                         style="margin-top: 20px; width: 497px"
                       >
-                        <li  *ngFor="let item of ListCategories; let i = index">
-
-                            <a type="button"  class="dropdown-item" (click)="sendData(item?.category)">{{ item?.category }}</a>  
+                        <li *ngFor="let item of ListCategories; let i = index">
+                          <a
+                            type="button"
+                            class="dropdown-item"
+                            (click)="sendData(item?.category)"
+                            >{{ item?.category }}</a
+                          >
                         </li>
                       </ul>
                     </div>
@@ -116,9 +140,15 @@
                   style="margin-left: 20px"
                 >
                   <span class="nav-link">
-                    <span class="material-symbols-outlined courses-favorite">
-                      favorite
-                    </span>
+                    <div style="background-color: #f3f4f7;" type="button" class="btn position-relative">
+                      <span class="material-symbols-outlined courses-favorite">
+                        favorite
+                      </span>
+                      <span style="margin-top: 8px; margin-left: -20px;" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        {{numberLiked}}
+                        <span class="visually-hidden">unread messages</span>
+                      </span>
+                    </div>
                   </span>
                 </li>
                 <li
@@ -126,12 +156,20 @@
                   *ngIf="!notToken"
                   style="margin-left: 20px"
                 >
-                  <span class="nav-link">
+                <span class="nav-link">
+                  <div style="background-color: #f3f4f7;" type="button" class="btn position-relative">
                     <span class="material-symbols-outlined courses-favorite">
                       shopping_cart
                     </span>
-                  </span>
+                    <span style="margin-top: 8px; margin-left: -20px;" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                      {{numberCarted}}
+                      <span class="visually-hidden">unread messages</span>
+                    </span>
+                  </div>
+                </span>
                 </li>
+
+
                 <div class="d-flex flex-column mb-3">
                   <li class="nav-item" *ngIf="!notToken">
                     <span class="nav-link">
@@ -182,51 +220,65 @@
                             </div>
                           </li>
                           <hr class="dropdown-divider" />
-                          <div >
-                          <li type="button" class="dropdown-item ng-star-inserted">
-                            <span class="body-user">
-                              Hồ sơ học tập
-                            </span>
-                          </li>
-                          <li type="button" class="dropdown-item ng-star-inserted">
-                            <span class="body-user">
-                              giỏ hàng của tôi
-                            </span>
-                          </li>
-                          <li type="button" class="dropdown-item ng-star-inserted">
-                            <span class="body-user">
-                              Danh sách yêu thích
-                            </span>
-                          </li>
-                          <li type="button" class="dropdown-item ng-star-inserted">
-                            <span class="body-user">
-                              Dạy học trêm FEDUCATION
-                            </span>
-                          </li>
-                        </div>
-                        <hr style="margin-top: 1px;" class="dropdown-divider" />
-                        <div>
-                        <li type="button" class="dropdown-item ng-star-inserted">
-                          <span class="body-user">
-                            Cài đặt tài khoản
-                          </span>
-                        </li>
-                        <li type="button" class="dropdown-item ng-star-inserted">
-                          <span class="body-user">
-                            Các phương thức thanh toán
-                          </span>
-                        </li>
-                        <li type="button" class="dropdown-item ng-star-inserted">
-                          <span class="body-user">
-                            Về chúng tôi
-                          </span>
-                        </li>
-                        <li  type="button" class="dropdown-item">
-                          <span class="body-user last">
-                            Đăng xuất
-                          </span>
-                        </li>
-                      </div>
+                          <div>
+                            <li
+                              type="button"
+                              class="dropdown-item ng-star-inserted"
+                            >
+                              <span class="body-user"> Hồ sơ học tập </span>
+                            </li>
+                            <li
+                              type="button"
+                              class="dropdown-item ng-star-inserted"
+                            >
+                              <span class="body-user"> giỏ hàng của tôi </span>
+                            </li>
+                            <li
+                              type="button"
+                              class="dropdown-item ng-star-inserted"
+                            >
+                              <span class="body-user">
+                                Danh sách yêu thích
+                              </span>
+                            </li>
+                            <li
+                              type="button"
+                              class="dropdown-item ng-star-inserted"
+                            >
+                              <span class="body-user">
+                                Dạy học trêm FEDUCATION
+                              </span>
+                            </li>
+                          </div>
+                          <hr
+                            style="margin-top: 1px"
+                            class="dropdown-divider"
+                          />
+                          <div>
+                            <li
+                              type="button"
+                              class="dropdown-item ng-star-inserted"
+                            >
+                              <span class="body-user"> Cài đặt tài khoản </span>
+                            </li>
+                            <li
+                              type="button"
+                              class="dropdown-item ng-star-inserted"
+                            >
+                              <span class="body-user">
+                                Các phương thức thanh toán
+                              </span>
+                            </li>
+                            <li
+                              type="button"
+                              class="dropdown-item ng-star-inserted"
+                            >
+                              <span class="body-user"> Về chúng tôi </span>
+                            </li>
+                            <li type="button" class="dropdown-item">
+                              <span class="body-user last"> Đăng xuất </span>
+                            </li>
+                          </div>
                         </ul>
                       </div>
                     </span>
@@ -255,7 +307,9 @@
           </div>
         </nav>
       </section>
-       
+  
+
+
       <div *ngIf="notToken">
         <div class="p-2" style="margin-right: 20px" *ngIf="isLogin">
           <app-login></app-login>
@@ -264,10 +318,14 @@
         <div class="p-2" *ngIf="isSignUp">
           <app-sign-up></app-sign-up>
         </div>
+
+
+      </div>
+      <div *ngIf="isDetail && !isLogin && !isSignUp" >
+        <app-detail  (dataEvent)="receiveData($event)"></app-detail>
       </div>
 
-      <!-- Example Code -->
-      <div class="container-adv" *ngIf="!isLogin && !isSignUp">
+      <div class="container-adv" *ngIf="!isLogin && !isSignUp && !isDetail && !isBuy">
         <div
           id="carouselExampleFade"
           class="carousel slide carousel-fade carousel-dark slide"
@@ -290,12 +348,16 @@
                     <h1>Đăng nhập ngay</h1>
                     <span class="body-title"> Đăng nhập hoặc đăng ký </span>
                     <span class="body-title">
-                      <button class="btn btn-info btn-primary">
+                      <button class="btn btn-info btn-primary".
+                      (click)="handleLogin()"
+                      >
+                        
                         Đăng nhập
                       </button>
                       <button
                         class="btn btn-info btn-primary"
                         style="margin-left: 20px"
+                        (click)="handleSignUp()"
                       >
                         Đăng ký
                       </button>
@@ -322,7 +384,8 @@
                       Bạn lần đầu đến đây ? Bạn muốn tìm các khóa học phù hợp
                       với định hướng nghề nghiệp về lập trình trong tương lai ?
                       Click ngay nút bên cạnh để bắt đầu
-                      <button
+                      <a
+                      href="#render"
                         class="btn btn-info btn-primary"
                         style="
                           color: aqua;
@@ -331,7 +394,7 @@
                         "
                       >
                         Learn on FEDUCATION
-                      </button>
+                    </a>
                     </span>
                   </div>
                 </div>
@@ -356,12 +419,13 @@
                       chúng tôi với việc được giảng dạy, đồng hành cùng chặng
                       đường truyền tải kiến thức đến cho mọi người.
                     </span>
-                    <button
+                    <a
+                      href="http://localhost:4201/" target="_blank"
                       class="btn btn-info btn-primary"
                       style="color: aqua"
                     >
                       Teach on FEDUCATION
-                    </button>
+                  </a>
                   </div>
                 </div>
               </div>
@@ -379,13 +443,19 @@
         </div>
       </div>
     </div>
-    <div style="margin-top: 40%; margin-left: 25px;">
-      <app-highlight ></app-highlight>
-    </div>
+
+
+
+
+
     
+    <div style="margin-top: 35%; margin-left: 25px" id="render">
+      <app-highlight *ngIf="!isDetail && !isBuy" ></app-highlight>
+    </div>
+
     <!-- <app-category style="margin-top: 50%; color: black;"></app-category> -->
   </body>
-  <footer class="">
+  <footer class="" style="overflow: hidden;">
     <div class="container-footer">
       <div class="container-footer-header position-relative">
         <div class="">
@@ -541,6 +611,9 @@
               </mat-expansion-panel>
             </mat-accordion>
           </div>
+        </div>
+        <div class="position-absolute bottom-0 start-50 translate-middle-x">
+          <span style="color: white"> Java 2023 </span>
         </div>
       </div>
     </div>

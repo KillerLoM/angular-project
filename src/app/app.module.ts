@@ -8,6 +8,8 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { NZ_I18N } from 'ng-zorro-antd/i18n';
+import { vi_VN } from 'ng-zorro-antd/i18n';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { BrowserModule } from '@angular/platform-browser';
@@ -38,6 +40,16 @@ import {ProgressSpinnerMode, MatProgressSpinnerModule} from '@angular/material/p
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatListModule} from '@angular/material/list';
 import { HighlightComponent } from './component/highlight/highlight.component';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { NzResultModule } from 'ng-zorro-antd/result';
+import { ExceptionComponent } from './component/Exception/exception/exception.component';
+import { NotFoundComponent } from './component/Exception/not-found/not-found.component';
+import { DetailComponent } from './component/detail/detail.component';
+import { BuyCourseComponent } from './component/buy-course/buy-course.component';
+import {MatTableModule, MatTableDataSource} from '@angular/material/table';
+
+import {MatCheckboxModule} from '@angular/material/checkbox';
 @NgModule({
   declarations: [
     AppComponent,
@@ -48,10 +60,15 @@ import { HighlightComponent } from './component/highlight/highlight.component';
     AdvertisementComponent,
     LessonsComponent,
     HighlightComponent,
+    ExceptionComponent,
+    NotFoundComponent,
+    DetailComponent,
+    BuyCourseComponent,
   ],
   providers: [
     AppService,
     AuthService,
+    { provide: NZ_I18N, useValue: vi_VN },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: InterceptorService,
@@ -65,8 +82,11 @@ import { HighlightComponent } from './component/highlight/highlight.component';
     NgSwitchCase,
     AppRoutingModule,
     MatProgressSpinnerModule,
+    MatTableModule,
     BrowserAnimationsModule,
+    MatAutocompleteModule,
     MatRadioModule,
+    MatCheckboxModule,
     MatSlideToggleModule,
     MatCardModule,
     MatButtonModule,
@@ -75,10 +95,12 @@ import { HighlightComponent } from './component/highlight/highlight.component';
     MatIconModule,
     MatInputModule,
     NgToastModule,
+    NzSelectModule,
     ReactiveFormsModule,
     FormsModule,
     MatProgressBarModule,
     MatExpansionModule,
+    NzResultModule,
     HttpClientModule,
     MatTabsModule,
     MatListModule,

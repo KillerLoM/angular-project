@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { AppService } from './app.service';
 import { Observable } from 'rxjs';
 import { Lessons } from '../Model/lessons';
@@ -10,7 +10,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 })
 export class LessonsService {
   url = ''
-  constructor(private appService: AppService, private http: HttpClient) { 
+  constructor(private appService: AppService, @Inject(HttpClient)private http: HttpClient) { 
     this.url = this.appService.getUrlLessons();
   }
   getLessons(id: number): Observable<any> {

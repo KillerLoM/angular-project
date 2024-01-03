@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomePageComponent } from './home-page/home-page.component';
 import { CategoryComponent } from './component/category/category.component';
 import { LessonsComponent } from './component/lessons/lessons.component';
+import { NotFoundComponent } from './component/Exception/not-found/not-found.component';
 
 const routes: Routes = [
 {  path: '',
@@ -19,7 +20,11 @@ const routes: Routes = [
     component: LessonsComponent,
     title: 'FEDUCATION',
   },
-
+  {
+    path: '**', // wildcard route for unknown paths
+    component: NotFoundComponent,
+    title: 'ERROR',
+  },
 
 ];
 
