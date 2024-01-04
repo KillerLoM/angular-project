@@ -43,7 +43,10 @@
           <div class="container-fluid">
             <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
               <a class="navbar-brand"
+              href="/#"
+              (click)="handleReset()"
                 ><img
+
                   src="https://www.fetel.hcmus.edu.vn/wp-content/uploads/2022/09/logo-fetel.png"
                   alt=""
                   srcset=""
@@ -140,15 +143,26 @@
                   style="margin-left: 20px"
                 >
                   <span class="nav-link">
-                    <div style="background-color: #f3f4f7;" type="button" class="btn position-relative">
-                      <span class="material-symbols-outlined courses-favorite">
-                        favorite
-                      </span>
-                      <span style="margin-top: 8px; margin-left: -20px;" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                        {{numberLiked}}
-                        <span class="visually-hidden">unread messages</span>
-                      </span>
+                    <div class="btn-group">
+                      <button style="background-color: #f3f4f7;" type="button" class="btn position-relative dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" >
+                        <span class="material-symbols-outlined courses-favorite">
+                          favorite
+                        </span>
+                        <span style="margin-top: 8px; margin-left: -20px;" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                          {{numberLiked}}
+                          <span class="visually-hidden">unread messages</span>
+                        </span>
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">Separated link</a></li>
+                      </ul>
                     </div>
+                    
+
                   </span>
                 </li>
                 <li
@@ -223,7 +237,7 @@
                           <div>
                             <li
                               type="button"
-                              class="dropdown-item ng-star-inserted"
+                              class="dropdown-item ng-star-inserted" (click)="handleSetting()"
                             >
                               <span class="body-user"> Hồ sơ học tập </span>
                             </li>
@@ -321,11 +335,13 @@
 
 
       </div>
-      <div *ngIf="isDetail && !isLogin && !isSignUp" >
+      <div *ngIf="isDetail " >
         <app-detail  (dataEvent)="receiveData($event)"></app-detail>
       </div>
-
-      <div class="container-adv" *ngIf="!isLogin && !isSignUp && !isDetail && !isBuy">
+      <!-- <div *ngIf="!isDetail && !isLogin && !isSignUp && isSetting" >
+        <app-setting></app-setting>
+      </div> -->
+      <div class="container-adv" *ngIf="!isLogin && !isSignUp && !isDetail && !isBuy && !isSetting">
         <div
           id="carouselExampleFade"
           class="carousel slide carousel-fade carousel-dark slide"
@@ -450,7 +466,7 @@
 
     
     <div style="margin-top: 35%; margin-left: 25px" id="render">
-      <app-highlight *ngIf="!isDetail && !isBuy" ></app-highlight>
+      <app-highlight *ngIf="!isDetail && !isBuy && !isSetting"  ></app-highlight>
     </div>
 
     <!-- <app-category style="margin-top: 50%; color: black;"></app-category> -->

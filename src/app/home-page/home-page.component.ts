@@ -36,6 +36,7 @@ export class HomePageComponent implements OnInit {
   numberLiked = 0;
   isCategory = false;
   idCourse = 0 ;
+  isSetting = false ;
   numberCarted = 0;
   nameInput: string | null = null;
   control = new FormControl('');
@@ -58,6 +59,7 @@ export class HomePageComponent implements OnInit {
     @Inject(Router) private router: Router,
     @Inject(WishlistService) private wishlistService: WishlistService,
     @Inject(CartService)  private cartService: CartService,
+    
     
     private _formBuilder: FormBuilder
   ) {    }
@@ -127,7 +129,7 @@ export class HomePageComponent implements OnInit {
           );
           this.isToken = true;
           this.shareService.setLogin(true);
-          
+          this.getCartAndFavoriteNumber();
           if (this.user?.userDTO) {
             this.shareService.setEmaiUser(this.user?.userDTO.email)
             let stringName = this.user?.userDTO.fullname.split('');
@@ -139,13 +141,7 @@ export class HomePageComponent implements OnInit {
             }
             this.nameInput = nameDisplay;
           }
-          this.wishlistService.getWishListMine().subscribe((wishList) => {
-            this.numberLiked = wishList.getMyWishlistPaged.totalElements;
-            console.log( wishList);
-          })
-          this.cartService.getTotalCart().subscribe((totalCart) => {
-            this.numberCarted = totalCart.countMyCartItems.cartCount;
-          })
+
           return true;
         },
         (Error) => {
@@ -162,7 +158,15 @@ export class HomePageComponent implements OnInit {
     return false;
   }
 
-
+  getCartAndFavoriteNumber(): void{
+    this.wishlistService.getWishListMine().subscribe((wishList) => {
+      this.numberLiked = wishList.getMyWishlistPaged.totalElements;
+      console.log( wishList);
+    })
+    this.cartService.getTotalCart().subscribe((totalCart) => {
+      this.numberCarted = totalCart.countMyCartItems.cartCount;
+    })
+  }
   handleLogin() {
     this.reset();
     this.isLogin = true;
@@ -179,18 +183,20 @@ export class HomePageComponent implements OnInit {
     this.isSignUp = false;
     this.isDetail = false;
     this.isBuy = false;
+    this.isSetting = false;
   }
   handleClick(id: number){
 
       this.reset();
+      
       if(this.control){
-        alert(1);
+        this.control.reset(); 
         this.idCourse = id;
         this.shareService.setIdCourse(this.idCourse);
-        setInterval(() => {
+        setTimeout(() => {
       
           this.isDetail = true;
-          this.control.reset(); 
+
         }, 1000)
   
       }
@@ -204,7 +210,10 @@ export class HomePageComponent implements OnInit {
 
     );
   }
-
+  handleReset(){
+    this.reset();
+    // location.reload();
+  }
   sendData(category: string | undefined): void {
     if (category) {
       this.router.navigate(['/category', category]);
@@ -217,8 +226,9 @@ export class HomePageComponent implements OnInit {
   }
 
   receiveData(data: string) {
-    this.reset();
+
     if(data == 'reset'){
+      this.reset();
         this.handleLogin();
         console.log(this.isDetail)
         return;
@@ -229,7 +239,13 @@ export class HomePageComponent implements OnInit {
       this.isBuy = true;
       return;
     }
+    if(data == 'getdata'){
+      this.getCartAndFavoriteNumber();
+    }
    
   }
-
+  handleSetting(){
+    this.reset();
+    this.isSetting = true;
+  }
 }

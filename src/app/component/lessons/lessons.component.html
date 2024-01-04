@@ -10,7 +10,7 @@
     <title>HỌC</title>
   </head>
   <body>
-    <div>
+    <div *ngIf="!checkValid">
       <app-exception></app-exception>
     </div>
     <div *ngIf="checkValid">
@@ -159,7 +159,7 @@
               >
                 <div class="form-check">
                   <input
-                    (click)="handleInput(element.id, $event)"
+                    (click)="handleInput(element.id, element.position ,$event)"
                     class="form-check-input"
                     style="margin-top: 15px"
                     type="checkbox"

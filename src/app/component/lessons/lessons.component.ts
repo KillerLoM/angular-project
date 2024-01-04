@@ -20,6 +20,7 @@ import { CourseService } from 'src/app/Service/course.service';
 import { LessonsService } from 'src/app/Service/lessons.service';
 import { ShareService } from '../../../app/Service/shared/share.service';
 import { Injectable } from '@angular/core';
+import { EnrollmentsService } from 'src/app/Service/enrollments.service';
 
 @Injectable({
   providedIn: 'root',
@@ -29,7 +30,7 @@ import { Injectable } from '@angular/core';
   templateUrl: './lessons.component.html',
   styleUrls: ['./lessons.component.scss'],
 })
-export class LessonsComponent implements OnInit, AfterViewChecked {
+export class LessonsComponent implements OnInit {
   color: ThemePalette = 'primary';
   mode: ProgressSpinnerMode = 'determinate';
   value = 50;
@@ -48,7 +49,7 @@ export class LessonsComponent implements OnInit, AfterViewChecked {
   start: number | null = 0;
   isChecked: boolean = false;
   checkValid = false;
-  videoUrl = '';
+  videoUrl : string | null=null;
   @ViewChild('myVideo') myVideo: ElementRef | undefined;
   @ViewChild('progressBar') progressBar: ElementRef | undefined;
   progress: number = 0;
@@ -58,13 +59,14 @@ width: any;
       private route: ActivatedRoute,
     private courseService: CourseService,
     private appService: AppService,
-    private shareService: ShareService
+    private shareService: ShareService,
+    private enrollService: EnrollmentsService,
 
   ) {
     this.idn = 1;
     this.indexActive = 0;
     this.maxProgress = 0;
-  
+    
   }
   ngOnInit() {
     this.CheckValid();
@@ -80,13 +82,17 @@ width: any;
     this.getAllLessons();
     this.getGoalsCourse();
     this.init();
-
+    this.getStatusEnroll();
     this.myVideo?.nativeElement.addEventListener('timeupdate', () =>
       this.updateProgress()
     );
   }
   }
-
+  getStatusEnroll(){
+    if(this.lessonId)
+    this.enrollService.getFromCourse(this.lessonId).subscribe(data => {
+  console.log(data)})
+  }
   updateProgress() {
     const video = this.myVideo?.nativeElement;
     const progressBar = this.progressBar?.nativeElement;
@@ -147,11 +153,12 @@ width: any;
     }
     
   }
-  handleInput(id: any, event: Event) {
+  handleInput(id: any, position: number,event: Event) {
     const video = this.myVideo?.nativeElement;
     const checkbox = event.target as HTMLInputElement;
     let btn = document.getElementById(id) as HTMLInputElement;
     const isChecked = checkbox.checked;
+
     if (id != this.idActive && isChecked == true) {
       btn.click();
       video.pause();
@@ -267,5 +274,8 @@ width: any;
   }
   CheckValid(){
     this.checkValid = this.shareService.getCheckValid();
+  }
+  updateProgressLessons(input: number): void{
+    console.log(input);
   }
 }

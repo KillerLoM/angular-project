@@ -1,6 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { Cart } from 'src/app/Model/cart';
 import { Course } from 'src/app/Model/course';
 import { AppService } from 'src/app/Service/app.service';
@@ -25,6 +25,7 @@ export class BuyCourseComponent implements OnInit{
    sum = 0;
    selection = new SelectionModel<Course>(true, []);
    dataSource = new MatTableDataSource<Course>();
+   @Output() dataToParent = new EventEmitter<boolean>();
   constructor(
     @Inject(CartService) private cartService: CartService,
     @Inject(EnrollmentsService) private enrollService: EnrollmentsService,
@@ -88,5 +89,9 @@ export class BuyCourseComponent implements OnInit{
             })
           }))
         }
+    }
+    sendDataToParent() {
+      const data = 'Dữ liệu từ component con';
+      this.dataToParent.emit(true);
     }
 }

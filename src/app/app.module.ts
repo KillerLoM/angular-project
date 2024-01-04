@@ -50,6 +50,7 @@ import { BuyCourseComponent } from './component/buy-course/buy-course.component'
 import {MatTableModule, MatTableDataSource} from '@angular/material/table';
 
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import { SettingComponent } from './component/setting/setting.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -64,6 +65,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     NotFoundComponent,
     DetailComponent,
     BuyCourseComponent,
+    SettingComponent,
   ],
   providers: [
     AppService,
