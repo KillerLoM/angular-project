@@ -46,15 +46,15 @@
           </button>
         </div>
         <div class="row g-0 text-center">
-          <span class="col-sm-6 col-md-8"> Số bài đã học </span>
+          <span class="col-sm-6 col-md-8"> Số bài đã học: {{numberLessonsCompleted}}/{{numberOfLessons}} </span>
           <div class="col-6 col-md-4">
             <mat-progress-spinner
-              style="width: 30px; height: 30px; color: white"
+              style="width: 50px; height: 50px; color: black;"
               class="example-margin"
               class="example-margin"
               [color]="color"
               [mode]="mode"
-              [value]="value"
+              [value]="percentProgress"
             >
             </mat-progress-spinner>
           </div>
@@ -76,7 +76,7 @@
               </span>
               <span class="body-details">
                 <p class="header-details">Giảng viên:</p>
-                {{ course?.author }}
+                {{ lecturer }}
               </span>
               <div
                 id="progressContainer"
@@ -165,14 +165,16 @@
                     type="checkbox"
                     value="true"
                     id="{{ element.id}}"
+                    [(ngModel)]="checkboxValue[i]"
                   />
-                  <div type="button" (click)="handleClick(element.id*100, i)">
+                  <div type="button" (click)="handleClick(element.id, i)" disabled="true">
                     <div class="conten-lessons">
                      Bài {{ element.position }}. {{ element.lessonName }}
                       <span class="conten-lessons" style="font-style: italic">
                         Đánh dấu để hoàn thành
                       </span>
                     </div>
+                    
                   </div>
                 </div>
               </div>

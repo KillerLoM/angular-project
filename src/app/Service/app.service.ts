@@ -42,7 +42,7 @@ export class AppService {
     return this.url + '/cart/mine'
   }
   getUrlEnroll(){
-    return this.url + '/enrollments/'
+    return this.url + '/enrollments'
   }
   notiSuccess(title: string, message: string){
     this.toast.success({
