@@ -6,6 +6,63 @@
     <title>Document</title>
 </head>
 <body>
-    hello world {{category}}
+  <nav class="navbar bg-body-tertiary fixed-top" style="height: 80px">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="http://localhost:4200">
+        <img src="https://www.fetel.hcmus.edu.vn/wp-content/uploads/2022/09/logo-fetel.png"
+          alt=""
+          srcset=""
+          style="width: 113px; height: auto; margin-right: 20px"
+        />
+      </a>     
+    </div>
+  </nav>
+
+  <div class="course-list-container">
+    <h1>Danh sách khoá học về {{category}}</h1>
+    <div class="course-list" #courseList>
+      <!-- ListCourses -->
+      <div *ngFor="let course of ListCourses" class="course-card">
+        <img [src]="course.thumbUrl" alt="Course Thumbnail" />
+        <h2>{{ course.title }}</h2>
+        <div class="details-wrapper">
+          <p>{{ course.subtitle }}</p>
+          <div class="buttons">
+            <button (click)="addToCart(course)"><i class="fa fa-shopping-cart"></i> Thêm Vào Giỏ Hàng</button>
+            <button (click)="addToWishlist(course)"><i class="fa fa-heart"></i></button>
+          </div>
+        </div>
+        <!-- <p>Author: {{ course.author }}</p> -->
+        <!-- <p>Category: {{ course.category }}</p> -->
+        <p>Rating: {{ course.rating }}</p>
+        <p>Price: {{ course.price | currency:'USD':'symbol':'1.2-2' }}</p>
+        <p *ngIf="course.isFeatured">Featured Course</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="course-list-container">
+    <h1>Danh sách các khoá học khác</h1>
+    <div class="course-list" #otherCourseList>
+      <!-- ListOtherCourses -->
+      <div *ngFor="let otherCourse of ListOrtherCourses" class="course-card">
+        <img [src]="otherCourse.thumbUrl" alt="Course Thumbnail" />
+        <h2>{{ otherCourse.title }}</h2>
+        <div class="details-wrapper">
+          <p>{{ otherCourse.subtitle }}</p>
+          <div class="buttons">
+            <button (click)="addToCart(otherCourse)"><i class="fa fa-shopping-cart"></i> Thêm Vào Giỏ Hàng</button>
+            <button (click)="addToWishlist(otherCourse)"><i class="fa fa-heart"></i></button>
+          </div>
+        </div>
+        <!-- <p>Author: {{ otherCourse.author }}</p> -->
+        <!-- <p>Category: {{ otherCourse.category }}</p> -->
+        <p>Rating: {{ otherCourse.rating }}</p>
+        <p>Price: {{ otherCourse.price | currency:'USD':'symbol':'1.2-2' }}</p>
+        <p *ngIf="otherCourse.isFeatured">Featured Course</p>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
