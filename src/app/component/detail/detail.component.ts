@@ -52,7 +52,7 @@ export class DetailComponent implements OnInit {
   ngOnInit(){
     this.courseService.getDetailsCourse(this.idCourse).subscribe((data: Course) => {
       this.courseDetails = data;
-      this.lessonService.getLessons(this.idCourse).subscribe(data => {
+      this.lessonService.getLessons(this.idCourse, 0).subscribe(data => {
         this.numberOfLessons = data.numberOfItems;
 
       },Error =>{

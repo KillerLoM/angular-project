@@ -64,8 +64,6 @@
     <div class="d-flex flex-row mb-3 scrollable-div" style="margin-top: 51px">
       <div class="p-2">
         <video #myVideo (timeupdate)="updateProgress()" height="600px" width="1100px" style="background-color: black; margin-top: -10px; margin-left: -10px" controls [src]="videoUrl"></video>
-
-
         <h1 class="title">{{ course?.title }}</h1>
         <mat-tab-group>
           <mat-tab label="Thông tin chung">
@@ -112,7 +110,7 @@
               </span>
 
               <span class="body-details">
-                <p class="header-details">Các khóa học cùng chủ đề:</p>
+                <p class="header-details">Các khóa học cùng chủ đề: <a style="color: black; text-decoration: none;" href="/category/{{categoryLessons}}" target="_blank">{{categoryLessons}}</a></p>
               </span>
             </div>
           </mat-tab>
@@ -145,9 +143,15 @@
             position: relative;
             background-color: #f7f8fa;
           "
+          infiniteScroll
+          [infiniteScrollDistance]="1"
+          [infiniteScrollThrottle]="500"
+          (scrolled)="onScroll()"
+          [scrollWindow]="loadMore"
         >
-          <div *ngFor="let element of lessonsList; let i = index">
+
             <li
+            *ngFor="let element of lessonsList; let i = index"
               type="button"
               class="list-lessons"
               id="{{i}}"
@@ -178,8 +182,11 @@
                   </div>
                 </div>
               </div>
+
             </li>
-          </div>
+            <li *ngIf="isLoading"  class="list-lessons opacity-50" style="align-items: center; justify-content: center;display:flex;height: 100%;background-color: black;" ><div class="spinner-border text-dark" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div></li>
         </ul>
       </div>
     </div>
@@ -193,7 +200,7 @@
           style="width: 727px; height: 553px; margin-top: 5%"
         >
           <div class="form_heading">
-            <span class="Title"> Đánh giá khóa học </span>
+            <span class="Title"> {{titleForm}} </span>
             <button
               class="material-symbols-outlined"
               id="cancel"
@@ -207,7 +214,7 @@
 
           <div class="container">
             <div class="rating-wrap">
-              <h2>Star Rating</h2>
+              <h2>Chọn số ngôi sao</h2>
               <div class="center" style="height: 40%">
                 <fieldset class="rating" (mouseenter)="handleHover($event)">
                   <input
@@ -273,7 +280,7 @@
                 </fieldset>
               </div>
 
-              <h4 id="rating-value">{{ this.start }} sao trên 5 sao</h4>
+              <h4 id="rating-value"> {{contentRating}} {{ this.start }} sao trên 5 sao </h4>
             </div>
           </div>
 
@@ -282,7 +289,8 @@
               #mssg
               class="form-control"
               placeholder="Leave a comment here"
-              id="floatingTextarea2"
+              id="floatingTextarea2" 
+              [(ngModel)] = "contentReview"
             ></textarea>
             <label for="floatingTextarea2">Nhận xét góp ý:</label>
           </div>
@@ -298,7 +306,7 @@
               <button
                 class="Buttons-delete btn btn-outline-primary"
                 type="button"
-                (click)="ratingSend(mssg.value)"
+                (click)="ratingSend()"
               >
                 <span class="add"> Nhận xét </span>
               </button>

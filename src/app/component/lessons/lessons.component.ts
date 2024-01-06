@@ -23,6 +23,8 @@ import { Injectable } from '@angular/core';
 import { EnrollmentsService } from 'src/app/Service/enrollments.service';
 import { AuthService } from 'src/app/Service/auth.service';
 import { Enrollments } from 'src/app/Model/enrollments';
+import { PaginationService } from 'src/app/Service/pagination.service';
+import { ReviewService } from 'src/app/Service/review.service';
 
 @Injectable({
   providedIn: 'root',
@@ -40,21 +42,33 @@ export class LessonsComponent implements OnInit, AfterViewInit {
   STT: number | null = null;
   lessonsList: Lessons[] | null = [];
   goalsList: Goals[] | null = [];
-  lessonId: number | null = 0;
+  lastPageAvailabel = false;
+  lessonId =  0;
   course: Course | null = null;
   lastSeekTime: number = 0;
   idActive: number | null = null;
+  idReview = 0;
   newId: number | null = null;
   percentProgress: number = 0;
+  titleForm = "Đánh giá khóa học";
+  contentRating = "Điểm bạn cho chúng tôi là: "
   maxProgress: number ;
+  firstInit = true;
+  isEdit = false;
+  isLoading = false;
+  numberOfItemsPerPage = 10;
+  currentPage = 0;
   indexActive: number;
   isRating : boolean = false;
-  start: number | null = 0;
+  start = 0;
+  contentReview = '';
+  ratingReview = '';
   numberOfLessons : number = 10;
   isChecked: boolean = false;
   idDemo = 0;
   checkValid = false;
   videoUrl : string | null=null;
+  loadMore = true;
   lecturer: string  = ' ';
   enroll : Enrollments | null = null;
   numberLessonsCompleted = 0;
@@ -62,20 +76,25 @@ export class LessonsComponent implements OnInit, AfterViewInit {
   @ViewChild('progressBar') progressBar: ElementRef | undefined;
   checkboxValue: boolean[] = [];
   progress: number = 0;
-width: any;
+  categoryLessons = '';
+
+  width: any;
   constructor(
      private lessonService: LessonsService,
       private route: ActivatedRoute,
-    private courseService: CourseService,
+    private                   courseService: CourseService,
     private appService: AppService,
     private shareService: ShareService,
     private enrollService: EnrollmentsService,
     private authService: AuthService,
+    private paginationService: PaginationService,
+    private reviewService: ReviewService,
 
   ) {
     this.idn = 1;
     this.indexActive = 0;
-    this.maxProgress = 0;  
+    this.maxProgress = 0; 
+    this.loadMore = true; 
   }
   ngAfterViewInit(): void {
     this.setupVideo();
@@ -92,15 +111,21 @@ width: any;
           console.error('No lesson ID found in the URL.');
         }
       });
-      this.getAllLessons();
-      this.getGoalsCourse();
-      this.init();
-      this.getStatusEnroll();
+      setTimeout(() => {
+        this.getAllLessons();
+        this.getGoalsCourse();
+        this.init();
+      })
+
+      setTimeout(() => {
+        this.getStatusEnroll();
+      }, 200)
+
       this.myVideo?.nativeElement.addEventListener('timeupdate', () =>
         this.updateProgress()
       );
     }
-    },500)
+    },300)
 
   }
   getStatusEnroll(){
@@ -151,24 +176,31 @@ width: any;
     this.isChecked = !this.isChecked;
   }
   getAllLessons() {
-    if (this.lessonId)
-      this.lessonService.getLessons(this.lessonId).subscribe((data: any) => {
-        this.lessonsList = data.getLessonsByCourseId.content[0];
-        console.log(data.getLessonsByCourseId.content);
+    if (this.lessonId) {
+      this.lessonService.getLessons(this.lessonId, this.currentPage).subscribe((data: any) => {
+        this.lastPageAvailabel = data.getLessonsByCourseId.last;
+        this.firstInit = data.getLessonsByCourseId.first;
+        
+        if (this.firstInit) {
+          this.lessonsList = data.getLessonsByCourseId.content;
+        } else {
+          this.lessonsList?.push(...data.getLessonsByCourseId.content);
+          console.log(this.lessonsList);
+        }
+  
         this.numberOfLessons = data.numberOfItems;
         this.checkboxValue = Array(this.numberOfLessons).fill(false);
-        if (data.getLessonsByCourseId.content)
-          this.lessonsList = data.getLessonsByCourseId.content;
       });
-    if (this.lessonId)
-      this.courseService
-        .getDetailsCourse(this.lessonId)
-        .subscribe((data: any) => {
-          this.course = data;
-          console.log(data);
-          this.lecturer = data.name_user;
-        });
+  
+      this.courseService.getDetailsCourse(this.lessonId).subscribe((data: any) => {
+        this.course = data;
+        console.log(data);
+        this.lecturer = data.name_user;
+        this.categoryLessons = data.category;
+      });
+    }
   }
+  
   getGoalsCourse(){
     if(this.lessonId){
       this.courseService.getObjectiveCourse(this.lessonId).subscribe((data: any) => {
@@ -322,32 +354,91 @@ width: any;
       stars[i].addEventListener('click', (event) => {
         let rating = parseFloat((<HTMLInputElement>event.target).value);
         this.start = rating;
-        if (showValue) {
-          showValue.innerHTML = rating + " trên 5 sao";
-        }
       });
     }
+    if(this.isEdit){
+      this.contentRating = "Điểm mới: " ;
+    }
   }
-  
+
   
   handleClose(){
     this.isRating = false;
+    this.currentPage = 0;
+    this.getGoalsCourse();
+    this.getAllLessons();
+    setTimeout(() => {
+      this.getStatusEnroll();
+    }, 300)
   }
   handleRating(){
-    this.isRating = true
+    if(this.lessonId){
+      this.reviewService.getReviewMine(this.lessonId).subscribe((data: any) => {
+         if(data.review == null){
+          this.isEdit = false;
+
+         }
+         else{
+          this.isEdit = true;
+          this.contentReview = data.review.content;
+          this.start = data.review.rating;
+          this.titleForm = "Cập nhật nhận xét khóa học";
+          this.idReview = data.review.id;
+          this.contentRating = "Điểm lần trước: "
+         }
+      })
+      this.isRating = true;
+    }
+    else{
+      alert("Lỗi rồi đừng cố bấm vào mình nữa")
+    }
   }
-  ratingSend(message: string){
-    if(message == ''){
+  ratingSend(){
+    if( this.contentReview == '' ){
       this.appService.notiWarning("Thiếu góp ý","Bạn không muốn đóng góp ý kiến cho tụi mình sao");
       return;
     }
+    if(this.lessonId || this.start){
+      if(this.isEdit && this.idReview){
+        this.reviewService.putReview(this.start, this.contentReview, this.lessonId, this.idReview).subscribe(data => {
+          this.appService.notiSuccess("Thành công","Bạn đã cập nhật nhận xét về khóa học của chúng tôi");
+          this.handleClose();
+          return;
+        })
+      }
+      if(this.idReview == 0 ){
+        this.reviewService.postReview(this.start, this.contentReview, this.lessonId).subscribe((data: any) =>{
+          this.appService.notiSuccess("Đã thêm lời nhận xét", "Chúng tôi xin chân thành cảm ơn ý kiến đóng góp của bạn.");
+          this.handleClose();
+        })
+      }
+
+
+    }
     
+  }
+  onScroll(){
+    this.currentPage++;
+    
+    if(this.lastPageAvailabel != true){
+      this.isLoading = true;
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 1000)
+      this.getAllLessons();
+      setTimeout(() => {
+        this.getStatusEnroll();
+      } , 100)
+
+    }
+    else{
+      this.loadMore = false;
+    }
   }
   CheckValid(){
     this.authService.getUserProfile().subscribe(data => {
       this.checkValid = true;
       return;
-      alert(1);
     });
   }
 

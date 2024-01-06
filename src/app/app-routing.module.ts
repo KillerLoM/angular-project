@@ -4,6 +4,7 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { CategoryComponent } from './component/category/category.component';
 import { LessonsComponent } from './component/lessons/lessons.component';
 import { NotFoundComponent } from './component/Exception/not-found/not-found.component';
+import { SettingComponent } from './component/setting/setting.component';
 
 const routes: Routes = [
 {  path: '',
@@ -19,6 +20,11 @@ const routes: Routes = [
     path: 'lessons/:id',
     component: LessonsComponent,
     title: 'FEDUCATION',
+  },
+  {
+    path:'profile/me',
+    component: SettingComponent,
+    title:'FEDUCATION'
   },
   {
     path: '**', // wildcard route for unknown paths

@@ -1,47 +1,113 @@
-<div style="width: 100%; margin-top: 50%;">
-    <div class="btn-group">
-        <button type="button" class="btn btn-danger">Action</button>
-        <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
-          <span class="visually-hidden">Toggle Dropdown</span>
-        </button>
-        <ul class="dropdown-menu">
-          <li><div>
-            Nguyên trần <button>
-                Go to home
-            </button>
-          </div></li>
-          <li><a class="dropdown-item" href="#">Another action</a></li>
-          <li><a class="dropdown-item" href="#">Something else here</a></li>
-          <li><hr class="dropdown-divider"></li>
-          <li><a class="dropdown-item" href="#">Separated link</a></li>
-        </ul>
-      </div>
-    <mat-tab-group>
-        <mat-tab label="Thông tin tài khoản chung"> 
-            <div style="margin-top: 50px;">
-                <form class="example-form">
-                    <div>
-                        <mat-form-field class="example-full-width">
-                            <mat-label>Favorite food</mat-label>
-                            <input matInput placeholder="Ex. Pizza" value="Sushi">
-                          </mat-form-field>
-                    </div>
-                    <div>
-                        <mat-form-field class="example-full-width">
-                            <mat-label>Leave a comment</mat-label>
-                            <textarea matInput placeholder="Ex. It makes me feel..."></textarea>
-                        </mat-form-field>
-                    </div>        
-    
-                  </form>
+<nav class="navbar bg-body-tertiary fixed-top" style="height: 80px">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="http://localhost:4200">
+      <img
+        src="https://www.fetel.hcmus.edu.vn/wp-content/uploads/2022/09/logo-fetel.png"
+        alt=""
+        srcset=""
+        style="width: 113px; height: auto; margin-right: 20px"
+      />
+    </a>
+  </div>
+</nav>
+<div style="margin-top: 70px">
+  <mat-tab-group [color]="'accent'" [backgroundColor]="'primary'">
+    <mat-tab label="Cài dặt tài khoản" id="setting">
+      <div class="d-flex justify-content-center">
+        <div class="d-flex flex-column mb-3">
+          <div class="p-2">
+            <div *ngIf="!isChangePassword">
+            <label class="p-2" for="id">ID của bạn</label>
+            <div style="margin-left: 2px" class="p-2">
+              <input
+                type="id"
+                name=""
+                id="email"
+                [(ngModel)]="idUser"
+                disabled="true"
+              />
             </div>
+          
+          <div class="p-2">
+            <label class="p-2" for="name">Họ và tên của bạn</label>
+            <div style="margin-left: 2px" class="p-2">
+              <input type="email" name="" id="name" [(ngModel)]="nameUser" />
+            </div>
+          </div>
+          <div class="p-2">
+            <label class="p-2" for="email">Tài khoản email của bạn</label>
+            <div style="margin-left: 2px" class="p-2">
+              <input type="email" name="" id="email" [(ngModel)]="emailInput" />
+            </div>
+          </div>
+        </div>
+        <div *ngIf="isChangePassword">
+          <label class="p-2" for="id">Mật khẩu của bạn</label>
+          <div style="margin-left: 2px" class="p-2">
+            <mat-form-field>
+            <mat-label>Nhập mật khẩu của bạn vào đây</mat-label>
+            <input #passwordCurrent style="width: 350px" matInput [type]="type ? 'password' : 'text'">
+            <button mat-icon-button matSuffix (click)="type = !type" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="type">
+              <mat-icon>{{type ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+          </mat-form-field>
+          </div>
+        
+        <div class="p-2">
+          <label class="p-2" for="id">Mật khẩu mới của bạn</label>
+          <div style="margin-left: 2px" class="p-2">
+            <mat-form-field>
+            <mat-label>Nhập mật khẩu của bạn</mat-label>
+            <input #passwordNew  matInput [type]="type ? 'password' : 'text'">
+            <button mat-icon-button matSuffix (click)="type = !type" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="type">
+              <mat-icon>{{type ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+          </mat-form-field>
+          </div>
+        </div>
+        <div class="p-2">
+          <label class="p-2" for="id">Xác nhận mật khẩu mới</label>
+          <div style="margin-left: 2px" class="p-2">
+            <mat-form-field>
+            <mat-label>Nhập mật khẩu của bạn</mat-label>
+            <input #passwordNewConfirm  matInput [type]="type ? 'password' : 'text'">
+            <button mat-icon-button matSuffix (click)="type = !type" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="type">
+              <mat-icon>{{type ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+          </mat-form-field>
+          </div>
+        </div>
+        <div class="p-2">
+          <label class="p-2" for="id">Xác nhận mật khẩu mới</label>
+          <div style="margin-left: 2px" class="p-2">
+            <button id="btn-update" type="button" class="btn btn-outline-danger" (click)="changePassword(passwordCurrent.value, passwordNew.value, passwordNewConfirm.value)">Thay đổi mật khẩu</button>
+          </div>
+        </div>
+      </div>
+          <div class="p-2">
+            <div class="d-flex flex-row mb-3">
+              <div class="p-2">
+                <label  for="btn-update">Cập nhật ngay</label>
+                <div style="margin-left: 2px" class="p-2">
+                  <button id="btn-update" type="button" class="btn btn-outline-success" (click)="updateUser()">Cập nhật tài khoản</button>
+                </div>
+              </div>
+              <div class="p-2">
+                <label for="btn-delete">Đổi mật khẩu</label>
+                <div style="margin-left: 2px" class="p-2">
+                  <button *ngIf="!isChangePassword" id="btn-delete" type="button" class="btn btn-outline-primary" (click)="handleChangePassword()">Đổi mật khẩu</button>
+                  <button  *ngIf="isChangePassword" id="btn-delete" type="button" class="btn btn-outline-primary" (click)="handleChangePassword()">Cập nhật thông tin</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
 
-              
-        </mat-tab>
-        <mat-tab label="Second"> 
-          </mat-tab>
-        <mat-tab label="Third"> Content 3 </mat-tab>
-      </mat-tab-group>
+    <mat-tab label="Danh sách khóa học yêu thích">Content 2</mat-tab>
+    <mat-tab id="cart" label="Danh sách bạn cân nhắc mua">Content 3</mat-tab>
+    <mat-tab id="record" label="Hồ sơ học tập">Content 3</mat-tab>
+  </mat-tab-group>
 </div>
-
-  

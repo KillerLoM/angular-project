@@ -133,8 +133,8 @@
                     </div>
                   </div>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">About Us</a>
+                <li class="nav-item" type="button" (click)="handleGetAboutUs()">
+                  <a class="nav-link" >About Us</a>
                 </li>
 
                 <li
@@ -153,16 +153,7 @@
                           <span class="visually-hidden">unread messages</span>
                         </span>
                       </button>
-                      <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">Separated link</a></li>
-                      </ul>
                     </div>
-                    
-
                   </span>
                 </li>
                 <li
@@ -224,9 +215,9 @@
                                   <div class="d-flex flex-column mb-3">
                                     <div class="p-2 title-user">
                                       <h1>
-                                        {{ user?.userDTO?.fullname }}
+                                        {{ user?.userDTO?.fullname|| " example" }}
                                       </h1>
-                                      {{ user?.userDTO?.email }}
+                                      {{ user?.userDTO?.email || "email@example.com"}} 
                                     </div>
                                   </div>
                                 </div>
@@ -235,46 +226,52 @@
                           </li>
                           <hr class="dropdown-divider" />
                           <div>
+                            <a href="http://localhost:4200/profile/me/#record" style="text-decoration: none; color: black">
                             <li
                               type="button"
-                              class="dropdown-item ng-star-inserted" (click)="handleSetting()"
+                              class="dropdown-item ng-star-inserted"  
                             >
                               <span class="body-user"> Hồ sơ học tập </span>
                             </li>
-                            <li
-                              type="button"
-                              class="dropdown-item ng-star-inserted"
-                            >
-                              <span class="body-user"> giỏ hàng của tôi </span>
-                            </li>
-                            <li
-                              type="button"
-                              class="dropdown-item ng-star-inserted"
-                            >
-                              <span class="body-user">
-                                Danh sách yêu thích
-                              </span>
-                            </li>
-                            <li
-                              type="button"
-                              class="dropdown-item ng-star-inserted"
-                            >
-                              <span class="body-user">
-                                Dạy học trêm FEDUCATION
-                              </span>
-                            </li>
+                          </a>
+                            <a href="http://localhost:4200/profile/me/#cart" style="text-decoration: none; color: black">
+                              <li
+                                type="button"
+                                class="dropdown-item ng-star-inserted"  
+                              >
+                                <span class="body-user"> Giỏ hàng của tôi </span>
+                              </li>
+                            </a>
+                            <a href="http://localhost:4200/profile/me/#liked" style="text-decoration: none; color: black">
+                              <li
+                                type="button"
+                                class="dropdown-item ng-star-inserted"  
+                              >
+                                <span class="body-user"> Danh sách yêu thích </span>
+                              </li>
+                            </a>
+                            <a href="http://localhost:4201" style="text-decoration: none; color: black">
+                              <li
+                                type="button"
+                                class="dropdown-item ng-star-inserted"  
+                              >
+                                <span class="body-user"> Dạy học trên FEDUCATION</span>
+                              </li>
+                            </a>
                           </div>
                           <hr
                             style="margin-top: 1px"
                             class="dropdown-divider"
                           />
                           <div>
-                            <li
-                              type="button"
-                              class="dropdown-item ng-star-inserted"
-                            >
-                              <span class="body-user"> Cài đặt tài khoản </span>
-                            </li>
+                            <a href="http://localhost:4200/profile/me/#setting" style="text-decoration: none; color: black">
+                              <li
+                                type="button"
+                                class="dropdown-item ng-star-inserted"  
+                              >
+                                <span class="body-user"> Cài đặt tài khoản </span>
+                              </li>
+                            </a>
                             <li
                               type="button"
                               class="dropdown-item ng-star-inserted"
@@ -286,10 +283,11 @@
                             <li
                               type="button"
                               class="dropdown-item ng-star-inserted"
+                              (click)="handleGetAboutUs()"
                             >
                               <span class="body-user"> Về chúng tôi </span>
                             </li>
-                            <li type="button" class="dropdown-item">
+                            <li type="button" class="dropdown-item" (click)="handleSignOut()">
                               <span class="body-user last"> Đăng xuất </span>
                             </li>
                           </div>
@@ -338,10 +336,10 @@
       <div *ngIf="isDetail " >
         <app-detail  (dataEvent)="receiveData($event)"></app-detail>
       </div>
-      <!-- <div *ngIf="!isDetail && !isLogin && !isSignUp && isSetting" >
-        <app-setting></app-setting>
-      </div> -->
-      <div class="container-adv" *ngIf="!isLogin && !isSignUp && !isDetail && !isBuy && !isSetting">
+      <div *ngIf="isAboutUs" style="margin-top: 24%;">
+        <app-about-us></app-about-us>
+      </div>
+      <div class="container-adv" *ngIf="!isLogin && !isSignUp && !isDetail && !isBuy && !isSetting && !isAboutUs">
         <div
           id="carouselExampleFade"
           class="carousel slide carousel-fade carousel-dark slide"
@@ -468,8 +466,6 @@
     <div style="margin-top: 35%; margin-left: 25px" id="render">
       <app-highlight *ngIf="!isDetail && !isBuy && !isSetting"  ></app-highlight>
     </div>
-
-    <!-- <app-category style="margin-top: 50%; color: black;"></app-category> -->
   </body>
   <footer class="" style="overflow: hidden;">
     <div class="container-footer">
@@ -524,17 +520,17 @@
                 >
                   <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <div class="p-2">
-                      <li class="nav-item">
-                        <a class="nav-link" href="#">Danh mục </a>
+                      <li class="nav-item" type="button" (click)="handleGetAboutUs()">
+                        <a class="nav-link" >Danh mục </a>
                       </li>
                     </div>
                     <div class="p-2">
                       <li class="nav-item">
-                        <a class="nav-link" href="#">Dạy học</a>
+                        <a class="nav-link" href="http://localhost:4201" target="_blank">Dạy học</a>
                       </li>
                     </div>
                     <div class="p-2">
-                      <li class="nav-item">
+                      <li class="nav-item" type="button" (click)="handleGetAboutUs()" >
                         <a class="nav-link" href="#">About US </a>
                       </li>
                     </div>

@@ -48,9 +48,11 @@ import { NotFoundComponent } from './component/Exception/not-found/not-found.com
 import { DetailComponent } from './component/detail/detail.component';
 import { BuyCourseComponent } from './component/buy-course/buy-course.component';
 import {MatTableModule, MatTableDataSource} from '@angular/material/table';
-
+import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { SettingComponent } from './component/setting/setting.component';
+import { AboutUsComponent } from './component/about-us/about-us.component';
+import { MoreComponent } from './component/more/more.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -66,6 +68,8 @@ import { SettingComponent } from './component/setting/setting.component';
     DetailComponent,
     BuyCourseComponent,
     SettingComponent,
+    AboutUsComponent,
+    MoreComponent,
   ],
   providers: [
     AppService,
@@ -89,6 +93,7 @@ import { SettingComponent } from './component/setting/setting.component';
     MatAutocompleteModule,
     MatRadioModule,
     MatCheckboxModule,
+    InfiniteScrollModule,
     MatSlideToggleModule,
     MatCardModule,
     MatButtonModule,

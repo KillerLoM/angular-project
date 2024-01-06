@@ -1,6 +1,6 @@
-import { AfterViewChecked, Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { AfterViewChecked, Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { Observable, catchError, debounceTime, distinctUntilChanged, filter, map, startWith, switchMap } from 'rxjs';
+import { Observable, Subscription, catchError, debounceTime, distinctUntilChanged, filter, map, startWith, switchMap } from 'rxjs';
 import { Category } from '../Model/category';
 import { Course } from '../Model/course';
 import { User } from '../Model/user';
@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 import { pl_PL } from 'ng-zorro-antd/i18n';
 import { WishlistService } from '../Service/wishlist.service';
 import { CartService } from '../Service/cart.service';
+import { SendSignalService } from '../Service/shared/send-signal.service';
 
 @Component({
   selector: 'app-home-page',
@@ -36,8 +37,10 @@ export class HomePageComponent implements OnInit {
   numberLiked = 0;
   isCategory = false;
   idCourse = 0 ;
+  availableDetail  = false;
   isSetting = false ;
   numberCarted = 0;
+  isAboutUs = false;
   nameInput: string | null = null;
   control = new FormControl('');
   filteredItems: Observable<Course[]> | undefined;
@@ -45,7 +48,8 @@ export class HomePageComponent implements OnInit {
   private checkValidCalled: boolean = false;
   @Input() valid: boolean | undefined;
   dataFromChild: string | undefined;
-
+  receivedSignal: number = 0;
+  private subscription: Subscription | null = null;
 
   inputForm = this._formBuilder.group({
     'inputControl': [''],
@@ -59,16 +63,24 @@ export class HomePageComponent implements OnInit {
     @Inject(Router) private router: Router,
     @Inject(WishlistService) private wishlistService: WishlistService,
     @Inject(CartService)  private cartService: CartService,
+    private signalService: SendSignalService,
     
     
     private _formBuilder: FormBuilder
-  ) {    }
-
-
+  ) {  
+    this.subscription = this.signalService.signal$.subscribe((signal) => {
+      this.receivedSignal = signal;
+      console.log(signal)
+    });
+    }
   ngOnInit() {
     this.shareService.setLogin(this.checkValid())
     this.getAllCategories();
     this.setupSearchControl();
+    if(this.shareService.getDetail() != 0){
+      this.availableDetail = true;
+      this.handleClick(this.shareService.getDetail());
+    }
   }
 
   private setupSearchControl() {
@@ -184,12 +196,13 @@ export class HomePageComponent implements OnInit {
     this.isDetail = false;
     this.isBuy = false;
     this.isSetting = false;
+    this.isAboutUs = false;
   }
   handleClick(id: number){
 
       this.reset();
       
-      if(this.control){
+      if(this.control ||  this.availableDetail){
         this.control.reset(); 
         this.idCourse = id;
         this.shareService.setIdCourse(this.idCourse);
@@ -198,7 +211,6 @@ export class HomePageComponent implements OnInit {
           this.isDetail = true;
 
         }, 1000)
-  
       }
 
   }
@@ -247,5 +259,18 @@ export class HomePageComponent implements OnInit {
   handleSetting(){
     this.reset();
     this.isSetting = true;
+  }
+  handleSignOut(): void{
+    localStorage.clear();
+    this.authService.logout().subscribe(data => {
+      this.appService.notiSuccess("Đã đăng xuất","Hẹn gặp lại bạn cùng FEDUCATION")
+    }, Errror =>{
+      this.appService.notiSuccess("Đã đăng xuất","Hẹn gặp lại bạn cùng FEDUCATION")
+    })
+    location.reload();
+  }
+  handleGetAboutUs(){
+    this.reset();
+    this.isAboutUs = true;
   }
 }

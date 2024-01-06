@@ -20,6 +20,9 @@ export class AppService {
   getUrlLogout(){
     return this.url + '/auth/logout';
   }
+  getUrlChangePassword(){
+    return this.url + '/auth/change-password';
+  }
   getUrlValidate(){
     return this.url + '/auth/validate-token';
   }
@@ -43,6 +46,9 @@ export class AppService {
   }
   getUrlEnroll(){
     return this.url + '/enrollments'
+  }
+  getUrlReview(){
+    return this.url + '/reviews/'
   }
   notiSuccess(title: string, message: string){
     this.toast.success({

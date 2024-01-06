@@ -9,9 +9,6 @@ import { User } from '../Model/user';
 })
 export class AuthService {
   token: String | null = null;
-  getUserById() {
-    throw new Error('Method not implemented.');
-  }
   url = '';
   private baseUrl = 'http://localhost:9000/api/profile/me';
   constructor(
@@ -41,10 +38,19 @@ export class AuthService {
     this.url = this.appService.getUrlLogout();
     return this.http.post(`${this.url}`, {}).pipe();
   }
+  changePassword(password: string, newPassword: string, confirmPass: string): Observable<any>{
+    this.url = this.appService.getUrlChangePassword();
+    let obj = {password: password, newPassword: newPassword, confirmPass: confirmPass}
+    return this.http.post(`${this.url}`, obj).pipe();
+  } 
   getUserProfile(): Observable<User> {
     // Lấy thông tin người dùng từ server
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get<User>(`${this.baseUrl}`);
+  }
+  updateUser(id: number, fullname: string, email: string, createdAt: Date): Observable<any> {
+    let obj = {id: id, fullname: fullname, email: email, createdAt: createdAt};
+    return this.http.put(`${this.baseUrl}`, obj).pipe();
   }
 }

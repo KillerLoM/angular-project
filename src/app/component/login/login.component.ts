@@ -19,6 +19,8 @@ export class LoginComponent {
   progressValue: number | null = 0;
   isLogIn = true;
   isSignUp = false;
+  icon = '';
+  type = 'password'
   margin: any;
   emailFormControl = new FormControl('', [
     Validators.required,

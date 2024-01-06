@@ -1,10 +1,11 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { AfterViewInit, Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Category } from 'src/app/Model/category';
 import { Course } from 'src/app/Model/course';
 import { AppService } from 'src/app/Service/app.service';
 import { CategoryService } from 'src/app/Service/category.service';
 import { CourseService } from 'src/app/Service/course.service';
+import { SendSignalService } from 'src/app/Service/shared/send-signal.service';
 import { ShareService } from 'src/app/Service/shared/share.service';
 
 @Component({
@@ -28,7 +29,9 @@ export class CategoryComponent implements OnInit, AfterViewInit {
   ListOrtherCourses: Course[] | null = [];
   constructor(private categoryService: CategoryService, private appService: AppService,private route: ActivatedRoute,
     private courseService: CourseService,
-    private sharedService: ShareService) {
+    private sharedService: ShareService, 
+    private signalService: SendSignalService,
+    @Inject(Router)private router: Router) {
       this.category = this.sharedService.getCategory();
       console.log(this.category);
       //this.handleCategory(this.category)
@@ -69,12 +72,10 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     });
   }
   addToCart(course: any) {
-    // Implement your logic to add to cart
     console.log('Added to Cart:', course.title);
   }
 
   addToWishlist(course: any) {
-    // Implement your logic to add to wishlist
     console.log('Added to Wishlist:', course.title);
   }
   ngOnInit(){
@@ -88,6 +89,11 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     });
     this.handleCategory(this.category); 
     this.handleGetOrtherCourses;   
+  }
+  handleGetDetail(input: number){
+    this.signalService.sendSignal(input);
+    this.sharedService.setIdDetail(input);
+    this.router.navigate(['']);
   }
 }
 

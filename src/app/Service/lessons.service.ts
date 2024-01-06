@@ -13,9 +13,10 @@ export class LessonsService {
   constructor(private appService: AppService, @Inject(HttpClient)private http: HttpClient) { 
     this.url = this.appService.getUrlLessons();
   }
-  getLessons(id: number): Observable<any> {
+  getLessons(id: number, page: number): Observable<any> {
 
-    let params = new HttpParams().set('id', id.toString()); 
-    return this.http.get(`${this.url}/${id}?page=0`).pipe();
+    let params = new HttpParams().set('page', page.toString()); 
+    
+    return this.http.get(`${this.url}/${id}`,{params}).pipe();
   }
 }

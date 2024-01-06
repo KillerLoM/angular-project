@@ -9,6 +9,7 @@ export class ShareService {
   private checkValid: boolean = false;
   private idCourse: number  = 8;
   private emailUser = '';
+  idDetail = 0;
   private isLogin = false;
   constructor() { }
   setCategory(categoryInput: string){
@@ -16,6 +17,9 @@ export class ShareService {
   }
   setIdCoures(idCourseHigh: number[]){
     this.idCourseHigh = idCourseHigh;
+  }
+  setIdDetail(input: number){
+    this.idDetail = input;
   }
   setEmaiUser(input: string){
     this.emailUser = input;
@@ -46,5 +50,8 @@ export class ShareService {
   }
   getLogin(): boolean{
     return this.isLogin;
+  }
+  getDetail(): number{
+    return this.idDetail;
   }
 }
