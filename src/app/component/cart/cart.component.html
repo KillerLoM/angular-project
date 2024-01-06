@@ -1,0 +1,51 @@
+<section  class="example-container mat-elevation-z8 " tabindex="0" style="margin-top: 30px; margin-right: 20px; ">
+    <table mat-table [dataSource]="dataSource"           
+    infiniteScroll
+    [infiniteScrollDistance]="1"
+    [infiniteScrollThrottle]="300"
+    (scrolled)="onScroll()"
+    [scrollWindow]="loadMore" >
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef>Tên khóa học</th>
+        <td mat-cell *matCellDef="let element">{{ element.title }}</td>
+      </ng-container>
+      <ng-container matColumnDef="subtitle">
+        <th mat-header-cell *matHeaderCellDef>Mô tả</th>
+        <td mat-cell *matCellDef="let element">{{ element.subtitle }}</td>
+      </ng-container>
+  
+      <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef>Loại</th>
+        <td mat-cell *matCellDef="let element">{{ element.category }}</td>
+      </ng-container>
+      <ng-container matColumnDef="rating">
+        <th mat-header-cell *matHeaderCellDef>Điểm</th>
+        <td mat-cell *matCellDef="let element">{{ element.rating }}</td>
+      </ng-container>
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef>Gía</th>
+        <td mat-cell *matCellDef="let element">{{ element.price }}000 VNĐ</td>
+      </ng-container>
+      <ng-container matColumnDef="avatar">
+        <th mat-header-cell *matHeaderCellDef>Ảnh nền</th>
+        <td mat-cell *matCellDef="let element">
+          <img
+            style="width: 40px; height: auto"
+            src="{{ element.thumbUrl }}"
+            alt=""
+          />
+        </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="handle">
+        <th mat-header-cell *matHeaderCellDef>Thao tác</th>
+        <td mat-cell *matCellDef="let element">
+          <div class="d-flex flex-row mb-3" style="padding-top: 10px;">
+            <button type="button" class="btn btn-outline-success" (click)="handleSendData(element.id)" >Xem chi tiết khóa học</button>
+        </div>
+        </td>
+      </ng-container>
+      <tr style="border-bottom: solid 2px black; font-weight: 800;" mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </section>

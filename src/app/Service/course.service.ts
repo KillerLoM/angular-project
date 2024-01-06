@@ -34,4 +34,5 @@ export class CourseService {
       let params = new HttpParams().set('title', title);
       return this.http.get<Course[]>(`${this.url}/search`,{params});
    }
+
 }

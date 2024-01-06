@@ -8,5 +8,6 @@ export interface Course {
     thumbUrl: string,
     price: number,
     isFeatured: boolean,
+    name_user: string,
     position?: number; 
 }

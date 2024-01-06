@@ -101,6 +101,7 @@ export class LessonsComponent implements OnInit, AfterViewInit {
   }
   ngOnInit() {
     this.CheckValid();
+
     setTimeout(() =>{
       if(this.checkValid == true) {
       this.route.paramMap.subscribe((params) => {

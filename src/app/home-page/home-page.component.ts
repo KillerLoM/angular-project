@@ -273,4 +273,7 @@ export class HomePageComponent implements OnInit {
     this.reset();
     this.isAboutUs = true;
   }
+  handleGetMoreInfo() {
+    this.router.navigate(['/profile/me']);
+  }
 }

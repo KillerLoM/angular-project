@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { AppService } from './app.service';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -33,5 +33,9 @@ export class CartService {
   }
   getCart(): Observable<any> {
     return this.http.get(`${this.urlMine}`,{}).pipe();
+  }
+  getCartMine(page: number): Observable<any>{
+    let params = new HttpParams().set('page', page);
+    return this.http.get(`${this.urlMine}`,{params});
   }
 }

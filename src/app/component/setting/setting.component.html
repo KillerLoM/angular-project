@@ -106,8 +106,14 @@
       </div>
     </mat-tab>
 
-    <mat-tab label="Danh sách khóa học yêu thích">Content 2</mat-tab>
-    <mat-tab id="cart" label="Danh sách bạn cân nhắc mua">Content 3</mat-tab>
-    <mat-tab id="record" label="Hồ sơ học tập">Content 3</mat-tab>
+    <mat-tab label="Danh sách khóa học yêu thích">
+      <app-wishlist></app-wishlist>
+    </mat-tab>
+    <mat-tab id="cart" label="Danh sách bạn cân nhắc mua">
+      <app-cart></app-cart>
+    </mat-tab>
+    <mat-tab id="record" label="Hồ sơ học tập">
+      <app-more></app-more>
+    </mat-tab>
   </mat-tab-group>
 </div>

@@ -53,6 +53,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import { SettingComponent } from './component/setting/setting.component';
 import { AboutUsComponent } from './component/about-us/about-us.component';
 import { MoreComponent } from './component/more/more.component';
+import { WishlistComponent } from './component/wishlist/wishlist.component';
+import { CartComponent } from './component/cart/cart.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -70,6 +72,8 @@ import { MoreComponent } from './component/more/more.component';
     SettingComponent,
     AboutUsComponent,
     MoreComponent,
+    WishlistComponent,
+    CartComponent,
   ],
   providers: [
     AppService,

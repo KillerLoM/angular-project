@@ -34,7 +34,7 @@ export class CategoryComponent implements OnInit, AfterViewInit {
     @Inject(Router)private router: Router) {
       this.category = this.sharedService.getCategory();
       console.log(this.category);
-      //this.handleCategory(this.category)
+
 
 
   }

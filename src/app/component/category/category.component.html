@@ -41,7 +41,7 @@
   <div class="course-list-container">
     <h1>Danh sách các khoá học khác</h1>
     <div class="course-list" #otherCourseList>
-      <div *ngFor="let otherCourse of ListOrtherCourses" class="course-card">
+      <div *ngFor="let otherCourse of ListOrtherCourses" class="course-card" (click)="handleGetDetail(otherCourse?.id || 0)" > 
         <img [src]="otherCourse.thumbUrl" alt="Course Thumbnail" />
         <h2>{{ otherCourse.title }}</h2>
         <div class="details-wrapper">

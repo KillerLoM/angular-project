@@ -1,0 +1,27 @@
+.example-container {
+    height: 480px;
+    overflow: auto;
+  }
+  table {
+    width: 80%;
+    height: 80%;
+    border-bottom: solid 2px black;
+    height: 400px
+  }
+  th,
+  td {
+    margin-bottom: 20px;
+  }
+  tr.mat-header-row {
+    border-bottom: 1px solid black;
+    text-align: center;
+  }
+  .mat-column-id {
+    width: 5px;
+    border-right: 1px solid black;
+    text-align: center;
+  }
+  .mat-column-rating{
+    width: 5px;
+    text-align: center;
+  }

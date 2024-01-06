@@ -1,1 +1,51 @@
-<p>more works!</p>
+<section  class="example-container mat-elevation-z8 " tabindex="0" style="margin-top: 30px; margin-right: 20px; ">
+    <table mat-table [dataSource]="listRecord"            >
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef>Tên khóa học</th>
+        <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+      </ng-container>
+      <ng-container matColumnDef="subtitle">
+        <th mat-header-cell *matHeaderCellDef>Bài đang học</th>
+        <td mat-cell *matCellDef="let element">{{ element.current_lessons }}</td>
+      </ng-container>
+  
+      <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef>Tiến độ</th>
+        <td mat-cell *matCellDef="let element">
+          <ng-container *ngIf="element.max_lessons === 0; else progressBlock">
+            Hiện khóa học chưa có bài học
+          </ng-container>
+          <ng-template #progressBlock>
+            {{ (element.current_lessons / element.max_lessons) * 100 }}%
+          </ng-template>
+        </td>
+      </ng-container>
+      
+      <ng-container matColumnDef="rating">
+        <th mat-header-cell *matHeaderCellDef>Hoàn thành chưa</th>
+        <td mat-cell *matCellDef="let element">{{ element.finish }}</td>
+      </ng-container>
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef>Giảng viên</th>
+        <td mat-cell *matCellDef="let element">{{ element.name_lecturer}}</td>
+      </ng-container>
+      <ng-container matColumnDef="avatar">
+        <th mat-header-cell *matHeaderCellDef>Tổng số bài học</th>
+        <td mat-cell *matCellDef="let element">
+            {{element.max_lessons}}
+        </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="handle">
+        <th mat-header-cell *matHeaderCellDef>Thao tác</th>
+        <td mat-cell *matCellDef="let element">
+          <div class="d-flex flex-row mb-3" style="padding-top: 10px;">
+            <button type="button" class="btn btn-outline-success" (click)="handleSendData(element.id_course)" >Tiếp tục học</button>
+        </div>
+        </td>
+      </ng-container>
+      <tr style="border-bottom: solid 2px black; font-weight: 800;" mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </section>
+

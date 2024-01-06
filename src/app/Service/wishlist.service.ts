@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { AppService } from './app.service';
 import { Observable } from 'rxjs';
@@ -25,5 +25,9 @@ export class WishlistService {
   }
   getWishListMine(): Observable<any>{
     return this.http.get(`${this.url}mine`).pipe();
+  }
+  getWishList(page: number): Observable<any>{
+    let params = new HttpParams().set('page', page);
+    return this.http.get(`${this.url}mine`, {params}).pipe();
   }
 }

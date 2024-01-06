@@ -90,6 +90,11 @@ export class BuyCourseComponent implements OnInit{
           }))
         }
     }
+    handlePayment(){
+      console.log(this.selection.selected);
+      this.carts = this.selection.selected;
+      this.handlePaymentAll();
+    }
     sendDataToParent() {
       const data = 'Dữ liệu từ component con';
       this.dataToParent.emit(true);
